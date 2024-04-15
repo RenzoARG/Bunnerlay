@@ -43,12 +43,12 @@ func create_chatter_msg(chatter: Chatter):
 	bunnies_count = container.get_child_count()
 	if bunnies_count <= max_bunnies:
 		#print(chatter.tags.display_name + ": " + chatter.message)
-		spawn_mob(chatter.tags.display_name,750,560,load(skins_list[randi() % skins_list.size()]))
+		spawn_mob(chatter.tags.display_name,965,722,load(skins_list[randi() % skins_list.size()]))
 		#bunnies_count = bunnies_count + 1
 	else:
 		print( str(max_bunnies) + " reached")
 		remove_random_node_from_container()
-		spawn_mob(chatter.tags.display_name,750,560,load(skins_list[randi() % skins_list.size()]))
+		spawn_mob(chatter.tags.display_name,965,722,load(skins_list[randi() % skins_list.size()]))
 
 func _change_bg_color(loaded_color):
 	RenderingServer.set_default_clear_color(loaded_color)
@@ -57,7 +57,7 @@ func spawn_mob(user_name, pos_x, pos_y, loaded):
 	var playground = $playground
 	var loaded_name = user_name
 	var loaded_texture = loaded
-
+	
 	if !playground.has_node(loaded_name):
 		var bunnito = bunny_scene.instantiate()
 		bunnito.position = Vector2(pos_x, pos_y) # Set the spawn position of the mob
@@ -67,7 +67,13 @@ func spawn_mob(user_name, pos_x, pos_y, loaded):
 		bunnito.change_texture(loaded_texture)
 	else:
 		print("Ya hay un bunito llamado " + loaded_name)
+		
+		var existing_bunny = playground.get_node(loaded_name)
+		var messages = [":)", ":D", "!", "WTF", "!!!", "!?", "🤍", "❤️", "🥕","🔴","🐇"]
+		var rand_index = randi() % messages.size()  # Get a random index within the array size
+		var que_dijo = messages[rand_index]  # Get the random message from the array
 
+		existing_bunny.emit_signal("ShowDialog", que_dijo)
 
 
 func dir_contents(_open) ->Array:
